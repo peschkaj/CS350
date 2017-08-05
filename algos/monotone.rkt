@@ -3,15 +3,11 @@
 (require "shared.rkt")
 (module+ test (require typed/rackunit))
 
-(: monotone : Huller)
-(define (monotone points [drawer! void])
+(: monotone : (Listof Point) -> (Listof Point))
+(define (monotone points )
   (define sorted (order points))
-  (define lower (build-side sorted drawer!))
-  (define upper
-    (build-side (reverse sorted) 
-                (ann (lambda (a b . c) 
-                       (apply drawer! a b (append c (list lower))))
-                     FrameDrawer)))
+  (define lower (build-side sorted))
+  (define upper (build-side (reverse sorted)))
   (append (rest lower) (rest upper)))
 
 (: order : (Listof Point) -> (Listof Point))
@@ -28,14 +24,13 @@
   (check-equal? (order (list 2 3 3+2i 1))
                 (list 1 2 3 3+2i)))
 
-(: build-side : (Listof Point) FrameDrawer -> (Listof Point))
-(define (build-side points drawer!)
+(: build-side : (Listof Point) -> (Listof Point))
+(define (build-side points)
   (let loop ([pts : (Listof Point) points] [results : (Listof Point) null])
     (match pts
       [(list) results]
       [(cons x r)
-       (drawer! points results
-                (list* x (if (null? results) null (list (first results)))))
+       (list* x (if (null? results) null (list (first results))))
        (loop (rest pts)
              (cons x (cut x results)))])))
 
