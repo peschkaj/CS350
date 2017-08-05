@@ -4,17 +4,20 @@
 
 (define max-runtime-ms 1000)
 
-(define (time-hull algorithm)
-  (let* ([n 10])
-    (time-hull-iter algorithm n '())))
+(define (time-hull n results-list)
+  (define the-list (random-data n))
+  (define quickhull-time-ms
+    (let ([start-time (current-inexact-milliseconds)]
+           [sorted-hull (quickhull the-list)])
+      (- (current-inexact-milliseconds) start-time)))
 
-(define (time-hull-iter algorithm n results-list)
-  (define hull-time-ms
-    (let* ([start-time (current-inexact-milliseconds)]
-           [sorted-hull algorithm (random-list n)])
-      )
-    (collect-garbage)
+  (collect-garbage)
 
-    (if (> max-runtime-ms hull-time-ms)
-        (cons (list n (symbol->string algorithm) hull-time-ms)))
-  )
+  (define monotone-time-ms
+    (let ([start-time (current-inexact-milliseconds)]
+          [sorted-hull (monotone the-list)])
+      (- (current-inexact-milliseconds) start-time)))
+
+  (if (> max-runtime-ms (max quickhull-time-ms monotone-time-ms))
+      (cons (list n quickhull-time-ms monotone-time-ms) results-list)
+      (time-hull (+ n 1) (cons (list n quickhull-time-ms monotone-time-ms) results-list))))
