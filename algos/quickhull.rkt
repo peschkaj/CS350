@@ -1,4 +1,7 @@
 #lang typed/racket
+
+; Shamelessly borrowed from https://github.com/florence/convex-hulls
+
 (provide quickhull)
 (require "shared.rkt")
 (module+ test (require typed/rackunit))
