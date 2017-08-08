@@ -33,3 +33,10 @@
 
 (define .x real-part)
 (define .y imag-part)
+
+(define (points-on-a-circle radius n)
+  (let ([incr (/ pi n)])
+    (for/list ([i (in-range (+ n))])
+      ; (x0 + r cos theta, y0 + r sin theta)
+      (cons (* radius (cos (* incr i)))
+            (* radius (sin (* incr i)))))))

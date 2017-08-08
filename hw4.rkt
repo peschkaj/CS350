@@ -11,12 +11,12 @@
 
   (define quickhull-time-ms
     (let ([start-time (current-milliseconds)]
-           [sorted-hull (quickhull the-list)])
+           [sorted-hull (quickhull data)])
       (- (current-inexact-milliseconds) start-time)))
 
   (define monotone-time-ms
     (let ([start-time (current-milliseconds)]
-          [sorted-hull (monotone the-list)])
+          [sorted-hull (monotone data)])
       (- (current-milliseconds) start-time)))
 
   (if (eq? (modulo n 100) 0)
