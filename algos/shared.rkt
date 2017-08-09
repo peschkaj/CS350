@@ -4,6 +4,7 @@
 
 (provide Point Huller FrameDrawer
          random-data random-point
+         points-on-a-circle
          .x .y)
 (require math/distributions)
 (define-type Point Complex)
@@ -34,9 +35,9 @@
 (define .x real-part)
 (define .y imag-part)
 
+(: points-on-a-circle : (-> Natural Natural (Listof Point)))
 (define (points-on-a-circle radius n)
-  (let ([incr (/ pi n)])
+  (let ([incr (/ (* 2 pi) n)])
     (for/list ([i (in-range (+ n))])
-      ; (x0 + r cos theta, y0 + r sin theta)
-      (cons (* radius (cos (* incr i)))
-            (* radius (sin (* incr i)))))))
+      (make-rectangular (* radius (cos (* incr i)))
+                        (* radius (sin (* incr i)))))))
